@@ -2,7 +2,11 @@ class PaymentsController < ApplicationController
     before_action :set_payment, only: [:show, :update, :destroy]
 
     def index
-        render json: Payment.all
+        if params[:category]
+            render json: Payment.where(category: params[:category])
+        else
+            render json: Payment.all
+        end
     end
 
     def create
@@ -42,7 +46,7 @@ class PaymentsController < ApplicationController
     end
 
     def payment_params
-        params.require(:payment).permit(:amount, :description)
+        params.require(:payment).permit(:amount, :description, :category)
     end
 
 end
